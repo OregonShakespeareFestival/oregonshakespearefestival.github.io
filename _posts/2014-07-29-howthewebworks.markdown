@@ -98,12 +98,55 @@ http://store.netgate.com/Netgate-FW-7541-1U-Rack-Mount-System-BTO-P1903.aspx
 
 ![starship](/static/starship.jpg)
 
+### NGINX
+---------------------------------
+
+NGINX is a reverse proxy first, load balancer second, and a web server third.  In the OSF implementation NGINX was selected due to it's ability to terminate SSL and act as a load balancer.
+
+NGINX provides load balancing for both the SiteCore delivery server and Jacobson Consulting Associates select your own seat.
+
+NGINX was originally slated for load balancing of the CRM/ERP service layer ( in this case Tessitura SOAP ) but was scrapped due to the integration of the SOAP services on the web server using a binding to localhost.
+
+SSL is also terminated at the reverse proxy.
+
+>Any request arriving in the clear is rewritten to SSL and the backend remains http.
+
+    rewrite        ^ https://$server_name$request_uri? permanent;
 
 
+Another article has a detailed brief on the NGINX configuration available from the parent site.
+
+### SiteCore Delivery servers
+----------------------------------
+
+OSF's web server configuration is quite unique in that three distinctly different applications are required to run to make the site go.
+
+*     OSFAshland SiteCore Application
+*     Select your own seat service
+*     Tessitura Service Layer
 
 
+#### Tessitura Service Layer
+The tessitura service layer is unique to OSF's sitecore deployment.  This is representative of the soap services needed to integrate with the ERP/CRM Tessitura.  Rather than go parallel with the Tessitura service layer we elected to use web gardens on the web server, employ the ASP.NET state service, and parallelize threads on each web server.
+
+Additionally the queue lengths on the application workers were also increased from their default setting of 1000 to 5000.
+
+#### Select your own seat service
+The select your own seat service by Jacobson Consulting and Associates uses the Tessitura service layer, javascript, and SVG objects to facilitate the generation of a seat map.  The service also has logic in it to evaluate membership levels.
+
+>Completely anecdoteally we have never been able to load test this service since it is so javascript heavy.  We can do functional tests in Selenium.  We also have not validated that this is 'A' OKAY with web gardens.  Several calls have pointed to angular JS and an excellent candidate to rewrite this if we ever want to completely re-write the UI.
+
+#### SiteCore Application
+The SiteCore application configuration is largely in the web.config files.  SiteCore itself does not support web gardens.
 
 
+SiteCore's caches per delivery server have been optimized according to the following guide:
+
+>http://sdn.sitecore.net/Articles/Administration/Sitecore%20Performance/Optimizing%20Sitecore%206%20and%20later/Optimizing%20Performance%20in%20Sitecore.aspx
+
+The sitecore instance on each web server is connected to the set of tessitura services on it's own web node.
+
+#### Tessitura Database Server
 
 
 

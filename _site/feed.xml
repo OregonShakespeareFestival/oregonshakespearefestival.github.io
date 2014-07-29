@@ -5,8 +5,8 @@
     <description>This is designed to be a living document representing the Tessitura SiteCore E-Commerce Design for the Oregon Shakespeare Festival Installed at DataCenter West</description>
     <link>http://127.0.0.1:4000/</link>
     <atom:link href="http://127.0.0.1:4000/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Tue, 29 Jul 2014 13:45:19 -0700</pubDate>
-    <lastBuildDate>Tue, 29 Jul 2014 13:45:19 -0700</lastBuildDate>
+    <pubDate>Tue, 29 Jul 2014 15:55:23 -0700</pubDate>
+    <lastBuildDate>Tue, 29 Jul 2014 15:55:23 -0700</lastBuildDate>
     <generator>Jekyll v2.1.1</generator>
     
       <item>
@@ -103,6 +103,62 @@
 &lt;p&gt;http://store.netgate.com/Netgate-FW-7541-1U-Rack-Mount-System-BTO-P1903.aspx&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/static/starship.jpg&quot; alt=&quot;starship&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;nginx&quot;&gt;NGINX&lt;/h3&gt;
+&lt;hr /&gt;
+
+&lt;p&gt;NGINX is a reverse proxy first, load balancer second, and a web server third.  In the OSF implementation NGINX was selected due to it’s ability to terminate SSL and act as a load balancer.&lt;/p&gt;
+
+&lt;p&gt;NGINX provides load balancing for both the SiteCore delivery server and Jacobson Consulting Associates select your own seat.&lt;/p&gt;
+
+&lt;p&gt;NGINX was originally slated for load balancing of the CRM/ERP service layer ( in this case Tessitura SOAP ) but was scrapped due to the integration of the SOAP services on the web server using a binding to localhost.&lt;/p&gt;
+
+&lt;p&gt;SSL is also terminated at the reverse proxy.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Any request arriving in the clear is rewritten to SSL and the backend remains http.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;rewrite        ^ https://$server_name$request_uri? permanent;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Another article has a detailed brief on the NGINX configuration available from the parent site.&lt;/p&gt;
+
+&lt;h3 id=&quot;sitecore-delivery-servers&quot;&gt;SiteCore Delivery servers&lt;/h3&gt;
+&lt;hr /&gt;
+
+&lt;p&gt;OSF’s web server configuration is quite unique in that three distinctly different applications are required to run to make the site go.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;OSFAshland SiteCore Application&lt;/li&gt;
+  &lt;li&gt;Select your own seat service&lt;/li&gt;
+  &lt;li&gt;Tessitura Service Layer&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;tessitura-service-layer&quot;&gt;Tessitura Service Layer&lt;/h4&gt;
+&lt;p&gt;The tessitura service layer is unique to OSF’s sitecore deployment.  This is representative of the soap services needed to integrate with the ERP/CRM Tessitura.  Rather than go parallel with the Tessitura service layer we elected to use web gardens on the web server, employ the ASP.NET state service, and parallelize threads on each web server.&lt;/p&gt;
+
+&lt;p&gt;Additionally the queue lengths on the application workers were also increased from their default setting of 1000 to 5000.&lt;/p&gt;
+
+&lt;h4 id=&quot;select-your-own-seat-service&quot;&gt;Select your own seat service&lt;/h4&gt;
+&lt;p&gt;The select your own seat service by Jacobson Consulting and Associates uses the Tessitura service layer, javascript, and SVG objects to facilitate the generation of a seat map.  The service also has logic in it to evaluate membership levels.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Completely anecdoteally we have never been able to load test this service since it is so javascript heavy.  We can do functional tests in Selenium.  We also have not validated that this is ‘A’ OKAY with web gardens.  Several calls have pointed to angular JS and an excellent candidate to rewrite this if we ever want to completely re-write the UI.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h4 id=&quot;sitecore-application&quot;&gt;SiteCore Application&lt;/h4&gt;
+&lt;p&gt;The SiteCore application configuration is largely in the web.config files.  SiteCore itself does not support web gardens.&lt;/p&gt;
+
+&lt;p&gt;SiteCore’s caches per delivery server have been optimized according to the following guide:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;http://sdn.sitecore.net/Articles/Administration/Sitecore%20Performance/Optimizing%20Sitecore%206%20and%20later/Optimizing%20Performance%20in%20Sitecore.aspx&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;The sitecore instance on each web server is connected to the set of tessitura services on it’s own web node.&lt;/p&gt;
+
+&lt;h4 id=&quot;tessitura-database-server&quot;&gt;Tessitura Database Server&lt;/h4&gt;
 
 </description>
         <pubDate>Tue, 29 Jul 2014 01:47:30 -0700</pubDate>

@@ -154,6 +154,62 @@
 
 <p><img src="/static/starship.jpg" alt="starship" /></p>
 
+<h3 id="nginx">NGINX</h3>
+<hr />
+
+<p>NGINX is a reverse proxy first, load balancer second, and a web server third.  In the OSF implementation NGINX was selected due to it’s ability to terminate SSL and act as a load balancer.</p>
+
+<p>NGINX provides load balancing for both the SiteCore delivery server and Jacobson Consulting Associates select your own seat.</p>
+
+<p>NGINX was originally slated for load balancing of the CRM/ERP service layer ( in this case Tessitura SOAP ) but was scrapped due to the integration of the SOAP services on the web server using a binding to localhost.</p>
+
+<p>SSL is also terminated at the reverse proxy.</p>
+
+<blockquote>
+  <p>Any request arriving in the clear is rewritten to SSL and the backend remains http.</p>
+</blockquote>
+
+<pre><code>rewrite        ^ https://$server_name$request_uri? permanent;
+</code></pre>
+
+<p>Another article has a detailed brief on the NGINX configuration available from the parent site.</p>
+
+<h3 id="sitecore-delivery-servers">SiteCore Delivery servers</h3>
+<hr />
+
+<p>OSF’s web server configuration is quite unique in that three distinctly different applications are required to run to make the site go.</p>
+
+<ul>
+  <li>OSFAshland SiteCore Application</li>
+  <li>Select your own seat service</li>
+  <li>Tessitura Service Layer</li>
+</ul>
+
+<h4 id="tessitura-service-layer">Tessitura Service Layer</h4>
+<p>The tessitura service layer is unique to OSF’s sitecore deployment.  This is representative of the soap services needed to integrate with the ERP/CRM Tessitura.  Rather than go parallel with the Tessitura service layer we elected to use web gardens on the web server, employ the ASP.NET state service, and parallelize threads on each web server.</p>
+
+<p>Additionally the queue lengths on the application workers were also increased from their default setting of 1000 to 5000.</p>
+
+<h4 id="select-your-own-seat-service">Select your own seat service</h4>
+<p>The select your own seat service by Jacobson Consulting and Associates uses the Tessitura service layer, javascript, and SVG objects to facilitate the generation of a seat map.  The service also has logic in it to evaluate membership levels.</p>
+
+<blockquote>
+  <p>Completely anecdoteally we have never been able to load test this service since it is so javascript heavy.  We can do functional tests in Selenium.  We also have not validated that this is ‘A’ OKAY with web gardens.  Several calls have pointed to angular JS and an excellent candidate to rewrite this if we ever want to completely re-write the UI.</p>
+</blockquote>
+
+<h4 id="sitecore-application">SiteCore Application</h4>
+<p>The SiteCore application configuration is largely in the web.config files.  SiteCore itself does not support web gardens.</p>
+
+<p>SiteCore’s caches per delivery server have been optimized according to the following guide:</p>
+
+<blockquote>
+  <p>http://sdn.sitecore.net/Articles/Administration/Sitecore%20Performance/Optimizing%20Sitecore%206%20and%20later/Optimizing%20Performance%20in%20Sitecore.aspx</p>
+</blockquote>
+
+<p>The sitecore instance on each web server is connected to the set of tessitura services on it’s own web node.</p>
+
+<h4 id="tessitura-database-server">Tessitura Database Server</h4>
+
 
   </article>
 
