@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Oregon Shakespeare Festival Tessitura and E-Commerce Design</title>
+    <description>This is designed to be a living document representing the Tessitura SiteCore E-Commerce Design for the Oregon Shakespeare Festival Installed at DataCenter West</description>
+    <link>http://127.0.0.1:4000/</link>
+    <atom:link href="http://127.0.0.1:4000/feed.xml" rel="self" type="application/rss+xml" />
+    <pubDate>Tue, 29 Jul 2014 12:58:59 -0700</pubDate>
+    <lastBuildDate>Tue, 29 Jul 2014 12:58:59 -0700</lastBuildDate>
+    <generator>Jekyll v2.1.1</generator>
+    
+      <item>
+        <title>How the Web Works</title>
+        <description>&lt;h3 id=&quot;how-the-web-works--at-the-oregon-shakespeare-festival-at-least&quot;&gt;How the web works.  At the Oregon Shakespeare Festival at least…&lt;/h3&gt;
+&lt;p&gt;==================================================================&lt;/p&gt;
+
+&lt;p&gt;Perhaps you’ve never asked yourself how organizations like the Oregon Shakespeare Festival scale their web infrastructure to accomodate heavy customer load while still providing a rich user experience and speedy check out.  Maybe you should!  A number of incredibly interesting web technologies are out there every day helping you make the purchases you need during member pre-sale events, big thanksgiving day sales, and online events.&lt;/p&gt;
+
+&lt;p&gt;This is the story of the Oregon Shakespeare Festival’s website www.osfashland.org and the improvements made to it’s design to help handle lots of customers online.&lt;/p&gt;
+
+&lt;h3 id=&quot;the-tech&quot;&gt;The Tech&lt;/h3&gt;
+&lt;hr /&gt;
+
+&lt;p&gt;Tons of cool technology is involved in making osfashland.org ticket sales a reality.&lt;/p&gt;
+
+&lt;p&gt;Amongst the tech is:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Gatling Stress Tests&lt;/li&gt;
+  &lt;li&gt;CloudFlare&lt;/li&gt;
+  &lt;li&gt;NGINX+&lt;/li&gt;
+  &lt;li&gt;Dell VRTX Converged Infrastructure&lt;/li&gt;
+  &lt;li&gt;vmWare vSphere 5&lt;/li&gt;
+  &lt;li&gt;CentOS&lt;/li&gt;
+  &lt;li&gt;Puppet&lt;/li&gt;
+  &lt;li&gt;Chocolatey&lt;/li&gt;
+  &lt;li&gt;PFSense&lt;/li&gt;
+  &lt;li&gt;ASP.NET&lt;/li&gt;
+  &lt;li&gt;SiteCore&lt;/li&gt;
+  &lt;li&gt;Closure Compile&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;how-web-sales-go&quot;&gt;How web sales go&lt;/h3&gt;
+&lt;hr /&gt;
+
+&lt;p&gt;In the figure below all of the components involved in selling a ticket on the web are outlined at a high level. Each component plays an important part in the scalability and redundancy that protects our user experience.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/static/webstack-architechture.png&quot; alt=&quot;WebArchitecture&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;our-patronage&quot;&gt;Our patronage&lt;/h3&gt;
+&lt;hr /&gt;
+
+&lt;p&gt;We know our patronage to be a diverse group of people using many different browsers out on the web.  At writing this article a 6 month sample of our users shows Safari on OS X to be the most popular browser at 39 % with Chrome and Internet Explorer following close behind.&lt;/p&gt;
+
+&lt;p&gt;Operating System Demographics put Windows first at 38.67% of market with iOS trailing just behind at 27.43%.  Much to our chagrin the mobile experience while improved is still lacking and will be the focus of next years preparations for the 2016 season pre-sale.&lt;/p&gt;
+
+&lt;h3 id=&quot;cloudflare&quot;&gt;CloudFlare&lt;/h3&gt;
+&lt;hr /&gt;
+
+</description>
+        <pubDate>Tue, 29 Jul 2014 01:47:30 -0700</pubDate>
+        <link>http://127.0.0.1:4000/website/2014/07/29/howthewebworks/</link>
+        <guid isPermaLink="true">http://127.0.0.1:4000/website/2014/07/29/howthewebworks/</guid>
+        
+        
+        <category>website</category>
+        
+      </item>
+    
+      <item>
+        <title>DataCenter West Networking</title>
+        <description>&lt;h1 id=&quot;networking-at-datacenter-west&quot;&gt;Networking at DataCenter West&lt;/h1&gt;
+
+&lt;p&gt;The network infrastructure connecting DataCenter West and the Oregon Shakespeare Festival is quite complex.  In order to fully undertand the reader should be familiar with the concept of
+  *vlans
+  *L2 lans
+  *NAT
+  *embedded virtual networks
+  *vmWare vSphere networks
+  *PFSense&lt;/p&gt;
+
+&lt;h2 id=&quot;intersite-diagram&quot;&gt;Intersite Diagram&lt;/h2&gt;
+
+&lt;p&gt;The intersite routing is achieved through a number of technologies.  Ashland -&amp;gt; Routes to DataCenter West via a L2 leased dark fiber.  The dark fiber is
+100mbps sync connection.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/static/intersite-networking.png&quot; alt=&quot;IntersiteDiagram&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;ashland-side&quot;&gt;Ashland Side&lt;/h3&gt;
+
+&lt;p&gt;The Ashland side of the transacation is a Cat6509E bringing the network in through an interface on our fiber blade.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;interface GigabitEthernet1/24
+description new-afn-uplink
+switchport
+switchport access vlan 3
+switchport trunk encapsulation dot1q
+switchport trunk native vlan 450
+switchport trunk allowed vlan 450,664,687
+switchport mode trunk
+no cdp enable
+spanning-tree portfast edge
+spanning-tree bpdufilter enable
+spanning-tree bpduguard enable
+end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Further the routes to the 172.16.20.0/24 subnet are held in place by a static route ( for now until OSPF and DMVPN can be implemented )&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ip route 172.16.20.0 255.255.255.0 172.16.4.10 tag 20
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;As all intervlans at OSF use the Cat6509E at Ashland as their gateway of last resort this facilitates intersite.&lt;/p&gt;
+
+&lt;h3 id=&quot;medford-side&quot;&gt;Medford Side&lt;/h3&gt;
+
+&lt;p&gt;On the Medford side of the transaction the L2 lan terminates in an Adtran switch and reaches the Dell-VRTX chassis via a cross connect terminated in gi0/1.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Two devices 1 physical and 1 virtual are involved in the handoff.&lt;/li&gt;
+  &lt;li&gt;Device #1 – A Dell Embedded Network Management Module&lt;/li&gt;
+  &lt;li&gt;Device #2 – A Virtualized PFSense firewall&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The Dell embedded switch module reachable at 172.16.20.47 and configurable from inside OSF over http uses standard VLAN terminology.  The cables in gig 0/1 and 0/2 bring the two networks into the chassis
+as untagged networks which are then in turn tagged to the blades inside the chassis.&lt;/p&gt;
+
+&lt;p&gt;Each blade running vmWare ESXi gets the following mapped to it’s 1/1 and 2/1 inteface respectively.&lt;/p&gt;
+
+&lt;p&gt;All unconfigured ports are simply in VLAN1 the 172.16.20.0/24 subnet to faclitate an easy physical direct connection to the DCWest RFC1918 subnet.&lt;/p&gt;
+
+&lt;h5 id=&quot;vlan1-configuration-example&quot;&gt;VLAN1 Configuration Example&lt;/h5&gt;
+
+&lt;p&gt;&lt;img src=&quot;/static/dell-network-vlan1.png&quot; alt=&quot;vlan1&quot; /&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;vlan3-configuration-example&quot;&gt;VLAN3 Configuration Example&lt;/h5&gt;
+
+&lt;p&gt;&lt;img src=&quot;/static/dell-network-vlan3.png&quot; alt=&quot;vlan3&quot; /&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;vlan687-configuration-example&quot;&gt;VLAN687 Configuration Example&lt;/h5&gt;
+
+&lt;p&gt;&lt;img src=&quot;/static/dell-network-vlan687.png&quot; alt=&quot;vlan687&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;in-vmware&quot;&gt;In vmWare&lt;/h3&gt;
+
+&lt;p&gt;The VRTX Chassis runs an embedded instance of vSphere server.  The vSphere server is the vmWare virtual appliance flavor based on the SLES jeost server OS.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/static/vsphere-network-config.png&quot; alt=&quot;vSwitch0&quot; /&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;In the above diagram you can see a single simple vSwitch connected to vmNic0.  vvmNic0 is mapped to the DellVRTX blade interface gig 1/1 and 2/1 respectively.  This is a trunk port with 1 as the native vlan and 3 and 687 as tagged.  Together this plus PFSense facilitate all routing.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;pfsense-configuration&quot;&gt;PFSense Configuration&lt;/h3&gt;
+
+&lt;p&gt;The PFSense configuration is very simple.  Each Public IP in VLAN 3 ( DataCenter West 198.251.115.96/27 ) is mapped to an IP in the 172.16.20.0/24 space using a virtual IP and a 1:1 NAT rule.&lt;/p&gt;
+
+&lt;p&gt;The virtual firewall also has three interfaces:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;LAN : 172.16.20.10&lt;/li&gt;
+  &lt;li&gt;WAN : 198.251.115.98&lt;/li&gt;
+  &lt;li&gt;OSF ( OPT1 ) : 172.16.4.10&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/static/pfinterfaces.png&quot; alt=&quot;pfinterfaces&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The NAT rules below dictate what “private ip” or piece of the 24 bit RFC 1918 allocation will be mapped to the server.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/static/pfonetoone.png&quot; alt=&quot;pfonetoone&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The Firewall rules in the below block from the WAN interface determine what traffic will be passed.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Note : The firewall rules are pointed at the private IP because they take place post network address translation.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;img src=&quot;/static/pfrules.png&quot; alt=&quot;pfrules&quot; /&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Though not networking related you may note that all HTTP/HTTPs traffic are passed by a single IP.  In this case an NGINX load balancer.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+</description>
+        <pubDate>Tue, 29 Jul 2014 01:47:30 -0700</pubDate>
+        <link>http://127.0.0.1:4000/network/2014/07/29/Network-Diagram/</link>
+        <guid isPermaLink="true">http://127.0.0.1:4000/network/2014/07/29/Network-Diagram/</guid>
+        
+        
+        <category>network</category>
+        
+      </item>
+    
+      <item>
+        <title>Welcome to Jekyll!</title>
+        <description>&lt;p&gt;You’ll find this post in your &lt;code&gt;_posts&lt;/code&gt; directory - edit this post and re-build (or run with the &lt;code&gt;-w&lt;/code&gt; switch) to see your changes!
+To add new posts, simply add a file in the &lt;code&gt;_posts&lt;/code&gt; directory that follows the convention: YYYY-MM-DD-name-of-post.ext.&lt;/p&gt;
+
+&lt;p&gt;Jekyll also offers powerful support for code snippets:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;Hi, &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;Tom&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#=&amp;gt; prints &amp;#39;Hi, Tom&amp;#39; to STDOUT.&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Check out the &lt;a href=&quot;http://jekyllrb.com&quot;&gt;Jekyll docs&lt;/a&gt; for more info on how to get the most out of Jekyll. File all bugs/feature requests at &lt;a href=&quot;https://github.com/jekyll/jekyll&quot;&gt;Jekyll’s GitHub repo&lt;/a&gt;.&lt;/p&gt;
+
+</description>
+        <pubDate>Tue, 29 Jul 2014 01:39:30 -0700</pubDate>
+        <link>http://127.0.0.1:4000/jekyll/update/2014/07/29/welcome-to-jekyll/</link>
+        <guid isPermaLink="true">http://127.0.0.1:4000/jekyll/update/2014/07/29/welcome-to-jekyll/</guid>
+        
+        
+        <category>jekyll</category>
+        
+        <category>update</category>
+        
+      </item>
+    
+  </channel>
+</rss>
