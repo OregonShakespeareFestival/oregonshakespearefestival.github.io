@@ -5,14 +5,14 @@
     <description>This is designed to be a living document representing the Tessitura SiteCore E-Commerce Design for the Oregon Shakespeare Festival Installed at DataCenter West</description>
     <link>http://127.0.0.1:4000/</link>
     <atom:link href="http://127.0.0.1:4000/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Tue, 29 Jul 2014 12:58:59 -0700</pubDate>
-    <lastBuildDate>Tue, 29 Jul 2014 12:58:59 -0700</lastBuildDate>
+    <pubDate>Tue, 29 Jul 2014 13:45:19 -0700</pubDate>
+    <lastBuildDate>Tue, 29 Jul 2014 13:45:19 -0700</lastBuildDate>
     <generator>Jekyll v2.1.1</generator>
     
       <item>
         <title>How the Web Works</title>
         <description>&lt;h3 id=&quot;how-the-web-works--at-the-oregon-shakespeare-festival-at-least&quot;&gt;How the web works.  At the Oregon Shakespeare Festival at least…&lt;/h3&gt;
-&lt;p&gt;==================================================================&lt;/p&gt;
+&lt;p&gt;=======================================================================&lt;/p&gt;
 
 &lt;p&gt;Perhaps you’ve never asked yourself how organizations like the Oregon Shakespeare Festival scale their web infrastructure to accomodate heavy customer load while still providing a rich user experience and speedy check out.  Maybe you should!  A number of incredibly interesting web technologies are out there every day helping you make the purchases you need during member pre-sale events, big thanksgiving day sales, and online events.&lt;/p&gt;
 
@@ -35,6 +35,7 @@
   &lt;li&gt;Puppet&lt;/li&gt;
   &lt;li&gt;Chocolatey&lt;/li&gt;
   &lt;li&gt;PFSense&lt;/li&gt;
+  &lt;li&gt;NewRelic&lt;/li&gt;
   &lt;li&gt;ASP.NET&lt;/li&gt;
   &lt;li&gt;SiteCore&lt;/li&gt;
   &lt;li&gt;Closure Compile&lt;/li&gt;
@@ -56,6 +57,52 @@
 
 &lt;h3 id=&quot;cloudflare&quot;&gt;CloudFlare&lt;/h3&gt;
 &lt;hr /&gt;
+&lt;p&gt;CloudFlare is a “Cloud Based” web optimization platform.  It not only acts as reverse proxy but also does inline content acceleration.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Cache&lt;/li&gt;
+  &lt;li&gt;Auto-minification&lt;/li&gt;
+  &lt;li&gt;Image scaling per-device&lt;/li&gt;
+  &lt;li&gt;DDOS-Protection&lt;/li&gt;
+  &lt;li&gt;Site Offline Message&lt;/li&gt;
+  &lt;li&gt;Fail Whale Pages ( Still needs chosen and done )&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Are just a few of the things that we benefit from by virtue of the fact that we have cloudflare.&lt;/p&gt;
+
+&lt;h4 id=&quot;recent-testing&quot;&gt;Recent Testing&lt;/h4&gt;
+&lt;p&gt;Recent internal testing has revealed the CloudFlare reduces load on our web servers by &lt;strong&gt;15-20%&lt;/strong&gt; during stress tests with Gatling tool.  This was tested loading 250 users across the farm at 1 user every two seconds.  Page load times were the most common metric used in measuring performance improvement.&lt;/p&gt;
+
+&lt;h4 id=&quot;questions-about-cloudflare&quot;&gt;Questions about CloudFlare&lt;/h4&gt;
+&lt;p&gt;Due to the nature of the way CloudFlare intercepts and modifys traffic we have wondered if we should leverage CloudFlare’s ability to pass extra information about the patron to NGINX.  NGINX may or may not be able to use this information to better maintain client state.&lt;/p&gt;
+
+&lt;p&gt;This is well documented here.&lt;/p&gt;
+
+&lt;p&gt;https://support.cloudflare.com/hc/en-us/articles/200504045-Using-CloudFlare-with-your-API&lt;/p&gt;
+
+&lt;h3 id=&quot;datacenter-west-colocation&quot;&gt;DataCenter West Colocation&lt;/h3&gt;
+&lt;hr /&gt;
+&lt;p&gt;DataCenter West as a facility was chosen largely because of it’s peer exhchange.  The peer exchange is the direct connection of all the major bandwidth carriers in Southern Oregon.  This allows the best opportunity to stay online selling tickets in our region.&lt;/p&gt;
+
+&lt;h4 id=&quot;issues-with-datacenter-west&quot;&gt;Issues with DataCenter West&lt;/h4&gt;
+&lt;p&gt;On July 28, 2014 at approximately 4:18 Data Center West experienced a single phase power loss.  This creates an unbalanced load condition when the currents on the three live wires of a three-phase system are not equal or are not at an exact 120° phase angle, the power-loss is greater than for a perfectly balanced system.&lt;/p&gt;
+
+&lt;p&gt;The Dell VRTX chassis at the site experienced partial power loss.  This resulted in the network management controller losing part of it’s configuration.  This was either due to the configuration not being saved to nvram or a problem with the management controller firmware.&lt;/p&gt;
+
+&lt;h3 id=&quot;pfsense-firewall-service&quot;&gt;PFSense Firewall Service&lt;/h3&gt;
+&lt;hr /&gt;
+
+&lt;p&gt;PFSense – a firewall distribution based in FreeBSD with a great web interface was chosen to perform firewall services for the e-commerce system largely due to it’s low cost, small attack surface, and agility.  PFSense is well support on the vSphere platform.&lt;/p&gt;
+
+&lt;h4 id=&quot;the-next-design-starship&quot;&gt;The Next Design Starship&lt;/h4&gt;
+
+&lt;p&gt;The next design of the DataCenter west rack will include another out of band firewall to hold up SSL VPN between sites.  This will be advantageous in the event that Hunter Fails or Human Intervention is required.&lt;/p&gt;
+
+&lt;p&gt;The first candidate is:&lt;/p&gt;
+
+&lt;p&gt;http://store.netgate.com/Netgate-FW-7541-1U-Rack-Mount-System-BTO-P1903.aspx&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/static/starship.jpg&quot; alt=&quot;starship&quot; /&gt;&lt;/p&gt;
 
 </description>
         <pubDate>Tue, 29 Jul 2014 01:47:30 -0700</pubDate>
@@ -148,7 +195,7 @@ as untagged networks which are then in turn tagged to the blades inside the chas
 &lt;p&gt;&lt;img src=&quot;/static/vsphere-network-config.png&quot; alt=&quot;vSwitch0&quot; /&gt;&lt;/p&gt;
 
 &lt;blockquote&gt;
-  &lt;p&gt;In the above diagram you can see a single simple vSwitch connected to vmNic0.  vvmNic0 is mapped to the DellVRTX blade interface gig 1/1 and 2/1 respectively.  This is a trunk port with 1 as the native vlan and 3 and 687 as tagged.  Together this plus PFSense facilitate all routing.&lt;/p&gt;
+  &lt;p&gt;In the above diagram you can see a single simple vSwitch connected to vmNic0.  vmNic0 is mapped to the DellVRTX blade interface gig 1/1 and 2/1 respectively.  This is a trunk port with 1 as the native vlan and 3 and 687 as tagged.  Together this plus PFSense facilitate all routing.&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;h3 id=&quot;pfsense-configuration&quot;&gt;PFSense Configuration&lt;/h3&gt;

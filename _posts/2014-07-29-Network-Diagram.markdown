@@ -86,7 +86,7 @@ The VRTX Chassis runs an embedded instance of vSphere server.  The vSphere serve
 
 ![vSwitch0](/static/vsphere-network-config.png)
 
->In the above diagram you can see a single simple vSwitch connected to vmNic0.  vvmNic0 is mapped to the DellVRTX blade interface gig 1/1 and 2/1 respectively.  This is a trunk port with 1 as the native vlan and 3 and 687 as tagged.  Together this plus PFSense facilitate all routing.
+>In the above diagram you can see a single simple vSwitch connected to vmNic0.  vmNic0 is mapped to the DellVRTX blade interface gig 1/1 and 2/1 respectively.  This is a trunk port with 1 as the native vlan and 3 and 687 as tagged.  Together this plus PFSense facilitate all routing.
 
 
 ### PFSense Configuration
