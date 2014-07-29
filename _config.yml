@@ -1,0 +1,12 @@
+# Site settings
+title: Oregon Shakespeare Festival Tessitura and E-Commerce Design
+email: andrewkr@osfashland.org
+description: "This is designed to be a living document representing the Tessitura SiteCore E-Commerce Design for the Oregon Shakespeare Festival Installed at DataCenter West"
+baseurl: ""
+url: "http://127.0.0.1:4000"
+twitter_username: jekyllrb
+github_username:  jekyll
+
+# Build settings
+markdown: kramdown
+permalink: pretty
