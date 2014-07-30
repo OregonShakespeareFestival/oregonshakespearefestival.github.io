@@ -4,10 +4,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Oregon Shakespeare Festival Tessitura and E-Commerce Design</title>
+    <title>Nginx+ Configuration</title>
     <meta name="viewport" content="width=device-width">
     <meta name="description" content="This is designed to be a living document representing the Tessitura SiteCore E-Commerce Design for the Oregon Shakespeare Festival Installed at DataCenter West">
-    <link rel="canonical" href="http://127.0.0.1:4000/">
+    <link rel="canonical" href="http://127.0.0.1:4000/network/2014/07/29/Nginx+/">
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/css/main.css">
@@ -53,38 +53,92 @@
 
     <div class="page-content">
       <div class="wrap">
-      <div class="home">
+      <div class="post">
 
-  <h1>Posts</h1>
+  <header class="post-header">
+    <h1>Nginx+ Configuration</h1>
+    <p class="meta">Jul 29, 2014</p>
+  </header>
 
-  <ul class="posts">
-    
-      <li>
-        <span class="post-date">Jul 29, 2014</span>
-        <a class="post-link" href="/network/2014/07/29/Nginx+/">Nginx+ Configuration</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Jul 29, 2014</span>
-        <a class="post-link" href="/website/2014/07/29/howthewebworks/">How the Web Works</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Jul 29, 2014</span>
-        <a class="post-link" href="/network/2014/07/29/Network-Diagram/">DataCenter West Networking</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Jul 29, 2014</span>
-        <a class="post-link" href="/jekyll/update/2014/07/29/welcome-to-jekyll/">Welcome to Jekyll!</a>
-      </li>
-    
-  </ul>
+  <article class="post-content">
+  <h3 id="nginx">Nginx+</h3>
+<hr />
 
-  <p class="rss-subscribe">subscribe <a href="/feed.xml">via RSS</a></p>
+<h3 id="nginx-roles">Nginx+ Roles</h3>
+<hr />
+
+<ul>
+  <li>Production Load Balancer</li>
+  <li>Development Load Balancer</li>
+  <li>Reverse Proxy</li>
+</ul>
+
+<h3 id="nginx-config">Nginx Config</h3>
+<hr />
+
+<p>From this point on we will deal primarily with files located in nginx+’s default configuration directory <code>/etc/nginx/</code>
+In the main config file <code>nginx.conf</code> there are several important options to set.</p>
+
+<h4 id="worker-threads">Worker Threads</h4>
+<p>To scale nginx we increased the number of worker threads with by setting <code>worker_processes  4;</code>.</p>
+
+<h4 id="logging-levels">Logging Levels</h4>
+<p>Additional logging levels can be enabled by appending <code>notice</code> or <code>info</code> etc to the line <code>error_log /var/log/nginx/error.log;</code>, for example: <code>error_log /var/log/nginx/error.log notice;</code>.</p>
+
+<h4 id="additional-configs">Additional Configs</h4>
+<p>Finally we end our configuration with <code>include /etc/nginx/conf.d/*.conf</code> which allows us to separate our webserver configs.</p>
+
+<h3 id="load-balancing">Load Balancing</h3>
+<hr />
+<p>For load balancing upstream zones must be defined that adhere to the following pattern</p>
+
+<pre><code>upstream &lt;zone-name&gt;
+{
+    zone &lt;zone-name&gt; &lt;memory-allocation&gt;;
+    &lt;additional-options&gt;;
+    &lt;loadbalancing-style&gt;;
+    server &lt;ip&gt;:&lt;port&gt; &lt;additional-options&gt;;
+}
+</code></pre>
+
+<p>An example ripped from one of our test environments uses a least number of connections load balancing style and uses health checks to remove overloaded servers from the load balancing pool</p>
+
+<pre><code>upstream wwwd-backend
+{
+        zone wwwd-backend 128k;
+        ip_hash;
+        least_conn;
+        server 172.16.20.26:80 max_fails=5 fail_timeout=10s slow_start=30s;
+        server 172.16.20.27:80 max_fails=5 fail_timeout=10s slow_start=30s;
+
+        keepalive 32;
+}
+</code></pre>
+
+<h4 id="upstream-options">Upstream Options</h4>
+<ul>
+  <li><code>ip_hash</code> enables sticky sessions so a patron will stick with a single server as the browse the site.</li>
+  <li><code>least_conn</code> is the load balancing style that nginx employs when selecting webservers to route trafic to.</li>
+  <li><code>max_fails</code> is the threshold of concurrent failed requests that nginx uses to determine server health.</li>
+  <li><code>fail_timeout</code> is the interval that nginx will wait before it begins probing a webserver again.</li>
+  <li><code>slow_start</code> is the interval during which nginx will route a reduced amount of traffic to the webserver after it passes health checks.</li>
+  <li><code>keepalive</code></li>
+</ul>
+
+<h3 id="status-pages">Status Pages</h3>
+<hr />
+<p>Two nginx status pages have been defined in status.conf and nginx-status.conf</p>
+
+<h3 id="zabbix-monitoring">Zabbix Monitoring</h3>
+<hr />
+
+<h3 id="puppet-deployment">Puppet Deployment</h3>
+<hr />
+
+
+  </article>
 
 </div>
-
       </div>
     </div>
 

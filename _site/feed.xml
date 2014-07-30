@@ -5,9 +5,95 @@
     <description>This is designed to be a living document representing the Tessitura SiteCore E-Commerce Design for the Oregon Shakespeare Festival Installed at DataCenter West</description>
     <link>http://127.0.0.1:4000/</link>
     <atom:link href="http://127.0.0.1:4000/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Tue, 29 Jul 2014 15:55:23 -0700</pubDate>
-    <lastBuildDate>Tue, 29 Jul 2014 15:55:23 -0700</lastBuildDate>
+    <pubDate>Tue, 29 Jul 2014 17:19:57 -0700</pubDate>
+    <lastBuildDate>Tue, 29 Jul 2014 17:19:57 -0700</lastBuildDate>
     <generator>Jekyll v2.1.1</generator>
+    
+      <item>
+        <title>Nginx+ Configuration</title>
+        <description>&lt;h3 id=&quot;nginx&quot;&gt;Nginx+&lt;/h3&gt;
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;nginx-roles&quot;&gt;Nginx+ Roles&lt;/h3&gt;
+&lt;hr /&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Production Load Balancer&lt;/li&gt;
+  &lt;li&gt;Development Load Balancer&lt;/li&gt;
+  &lt;li&gt;Reverse Proxy&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;nginx-config&quot;&gt;Nginx Config&lt;/h3&gt;
+&lt;hr /&gt;
+
+&lt;p&gt;From this point on we will deal primarily with files located in nginx+’s default configuration directory &lt;code&gt;/etc/nginx/&lt;/code&gt;
+In the main config file &lt;code&gt;nginx.conf&lt;/code&gt; there are several important options to set.&lt;/p&gt;
+
+&lt;h4 id=&quot;worker-threads&quot;&gt;Worker Threads&lt;/h4&gt;
+&lt;p&gt;To scale nginx we increased the number of worker threads with by setting &lt;code&gt;worker_processes  4;&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h4 id=&quot;logging-levels&quot;&gt;Logging Levels&lt;/h4&gt;
+&lt;p&gt;Additional logging levels can be enabled by appending &lt;code&gt;notice&lt;/code&gt; or &lt;code&gt;info&lt;/code&gt; etc to the line &lt;code&gt;error_log /var/log/nginx/error.log;&lt;/code&gt;, for example: &lt;code&gt;error_log /var/log/nginx/error.log notice;&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h4 id=&quot;additional-configs&quot;&gt;Additional Configs&lt;/h4&gt;
+&lt;p&gt;Finally we end our configuration with &lt;code&gt;include /etc/nginx/conf.d/*.conf&lt;/code&gt; which allows us to separate our webserver configs.&lt;/p&gt;
+
+&lt;h3 id=&quot;load-balancing&quot;&gt;Load Balancing&lt;/h3&gt;
+&lt;hr /&gt;
+&lt;p&gt;For load balancing upstream zones must be defined that adhere to the following pattern&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;upstream &amp;lt;zone-name&amp;gt;
+{
+    zone &amp;lt;zone-name&amp;gt; &amp;lt;memory-allocation&amp;gt;;
+    &amp;lt;additional-options&amp;gt;;
+    &amp;lt;loadbalancing-style&amp;gt;;
+    server &amp;lt;ip&amp;gt;:&amp;lt;port&amp;gt; &amp;lt;additional-options&amp;gt;;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;An example ripped from one of our test environments uses a least number of connections load balancing style and uses health checks to remove overloaded servers from the load balancing pool&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;upstream wwwd-backend
+{
+        zone wwwd-backend 128k;
+        ip_hash;
+        least_conn;
+        server 172.16.20.26:80 max_fails=5 fail_timeout=10s slow_start=30s;
+        server 172.16.20.27:80 max_fails=5 fail_timeout=10s slow_start=30s;
+
+        keepalive 32;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&quot;upstream-options&quot;&gt;Upstream Options&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;code&gt;ip_hash&lt;/code&gt; enables sticky sessions so a patron will stick with a single server as the browse the site.&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;least_conn&lt;/code&gt; is the load balancing style that nginx employs when selecting webservers to route trafic to.&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;max_fails&lt;/code&gt; is the threshold of concurrent failed requests that nginx uses to determine server health.&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;fail_timeout&lt;/code&gt; is the interval that nginx will wait before it begins probing a webserver again.&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;slow_start&lt;/code&gt; is the interval during which nginx will route a reduced amount of traffic to the webserver after it passes health checks.&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;keepalive&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;status-pages&quot;&gt;Status Pages&lt;/h3&gt;
+&lt;hr /&gt;
+&lt;p&gt;Two nginx status pages have been defined in status.conf and nginx-status.conf&lt;/p&gt;
+
+&lt;h3 id=&quot;zabbix-monitoring&quot;&gt;Zabbix Monitoring&lt;/h3&gt;
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;puppet-deployment&quot;&gt;Puppet Deployment&lt;/h3&gt;
+&lt;hr /&gt;
+
+</description>
+        <pubDate>Tue, 29 Jul 2014 08:30:52 -0700</pubDate>
+        <link>http://127.0.0.1:4000/network/2014/07/29/Nginx+/</link>
+        <guid isPermaLink="true">http://127.0.0.1:4000/network/2014/07/29/Nginx+/</guid>
+        
+        
+        <category>network</category>
+        
+      </item>
     
       <item>
         <title>How the Web Works</title>
