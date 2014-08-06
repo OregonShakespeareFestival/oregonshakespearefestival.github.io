@@ -5,14 +5,70 @@
     <description>This is designed to be a living document representing the Tessitura SiteCore E-Commerce Design for the Oregon Shakespeare Festival Installed at DataCenter West</description>
     <link>http://127.0.0.1:4000/</link>
     <atom:link href="http://127.0.0.1:4000/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Wed, 30 Jul 2014 08:36:33 -0700</pubDate>
-    <lastBuildDate>Wed, 30 Jul 2014 08:36:33 -0700</lastBuildDate>
+    <pubDate>Wed, 06 Aug 2014 11:33:31 -0700</pubDate>
+    <lastBuildDate>Wed, 06 Aug 2014 11:33:31 -0700</lastBuildDate>
     <generator>Jekyll v2.1.1</generator>
+    
+      <item>
+        <title>Gatling Load Tests</title>
+        <description>&lt;h3 id=&quot;load-testing&quot;&gt;Load Testing&lt;/h3&gt;
+&lt;hr /&gt;
+
+&lt;p&gt;We have simulated load across our web farm using a scala based testing framework called &lt;a href=&quot;http://http://gatling.io/&quot; title=&quot;Gatling&quot;&gt;Gatling&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;test-creation&quot;&gt;Test Creation&lt;/h3&gt;
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;running-the-tests&quot;&gt;Running The Tests&lt;/h3&gt;
+&lt;hr /&gt;
+&lt;p&gt;From the command line navigate to &lt;code&gt;$GATLING_HOME/bin&lt;/code&gt; and run &lt;code&gt;./gatling.sh&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Simulations are recursively searched for within the directory &lt;code&gt;$GATLING_HOME/user_file/simulations&lt;/code&gt; and presented for selection in a text based menu.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Choose a simulation number:
+     [0] ES4H125u
+     [1] ES4H1u
+     [2] ES4H250u
+     [3] ES4H250ux2
+     [4] ES4H250ux4
+     [5] ES4H75u
+     [6] osfashland.ES3H125u
+     [7] osfashland.ES3H1u
+     [8] osfashland.ES3H250u
+     [9] osfashland.ES3H250ux2
+     [10] osfashland.ES3H250ux4
+     [11] osfashland.ES3H75u
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;After selecting the simulation enter an id for the test, the default being the scenario name defined in the test.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Select simulation id (default is &#39;es4h125u&#39;). Accepted characters are a-z, A-Z, 0-9, - and _
+EStack4H250u2   
+Select run description (optional)
+
+Simulation ES4H125u started...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Realtime statistics are provided every 10 seconds while the test is running and results are placed a folder in the directory &lt;code&gt;$GATLING_HOME\results&lt;/code&gt; with a name that matches the standard &lt;code&gt;&amp;lt;simulationid&amp;gt;-&amp;lt;timestamp&amp;gt;&lt;/code&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;stitching-multiple-tests&quot;&gt;Stitching Multiple Tests&lt;/h3&gt;
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;drawbacks&quot;&gt;Drawbacks&lt;/h3&gt;
+&lt;hr /&gt;
+</description>
+        <pubDate>Wed, 06 Aug 2014 04:28:02 -0700</pubDate>
+        <link>http://127.0.0.1:4000/2014/08/06/GatlingLoadTests/</link>
+        <guid isPermaLink="true">http://127.0.0.1:4000/2014/08/06/GatlingLoadTests/</guid>
+        
+        
+      </item>
     
       <item>
         <title>Nginx+ Configuration</title>
         <description>&lt;h3 id=&quot;nginx&quot;&gt;Nginx+&lt;/h3&gt;
 &lt;hr /&gt;
+&lt;p&gt;Nginx &lt;/p&gt;
 
 &lt;h3 id=&quot;nginx-roles&quot;&gt;Nginx+ Roles&lt;/h3&gt;
 &lt;hr /&gt;
@@ -45,9 +101,9 @@ In the main config file &lt;code&gt;nginx.conf&lt;/code&gt; there are several im
 &lt;pre&gt;&lt;code&gt;upstream &amp;lt;zone-name&amp;gt;
 {
     zone &amp;lt;zone-name&amp;gt; &amp;lt;memory-allocation&amp;gt;;
-    &amp;lt;additional-options&amp;gt;;
     &amp;lt;loadbalancing-style&amp;gt;;
-    server &amp;lt;ip&amp;gt;:&amp;lt;port&amp;gt; &amp;lt;additional-options&amp;gt;;
+    server &amp;lt;ip&amp;gt;:&amp;lt;port&amp;gt; &amp;lt;arguments&amp;gt;;
+    &amp;lt;additional-options&amp;gt;;
 }
 &lt;/code&gt;&lt;/pre&gt;
 
@@ -60,7 +116,6 @@ In the main config file &lt;code&gt;nginx.conf&lt;/code&gt; there are several im
         least_conn;
         server 172.16.20.26:80 max_fails=5 fail_timeout=10s slow_start=30s;
         server 172.16.20.27:80 max_fails=5 fail_timeout=10s slow_start=30s;
-
         keepalive 32;
 }
 &lt;/code&gt;&lt;/pre&gt;
@@ -72,19 +127,20 @@ In the main config file &lt;code&gt;nginx.conf&lt;/code&gt; there are several im
   &lt;li&gt;&lt;code&gt;max_fails&lt;/code&gt; is the threshold of concurrent failed requests that nginx uses to determine server health.&lt;/li&gt;
   &lt;li&gt;&lt;code&gt;fail_timeout&lt;/code&gt; is the interval that nginx will wait before it begins probing a webserver again.&lt;/li&gt;
   &lt;li&gt;&lt;code&gt;slow_start&lt;/code&gt; is the interval during which nginx will route a reduced amount of traffic to the webserver after it passes health checks.&lt;/li&gt;
-  &lt;li&gt;&lt;code&gt;keepalive&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;keepalive&lt;/code&gt; defines how many connections to keep active between each worker thread and upstream servers.&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;h3 id=&quot;status-pages&quot;&gt;Status Pages&lt;/h3&gt;
 &lt;hr /&gt;
-&lt;p&gt;Two nginx status pages have been defined in status.conf and nginx-status.conf&lt;/p&gt;
+&lt;p&gt;Two nginx status pages have been enabled which are defined in the files status.conf and nginx-status.conf&lt;/p&gt;
 
 &lt;h3 id=&quot;zabbix-monitoring&quot;&gt;Zabbix Monitoring&lt;/h3&gt;
 &lt;hr /&gt;
+&lt;p&gt;Zabbix is used for proactive &lt;/p&gt;
 
 &lt;h3 id=&quot;puppet-deployment&quot;&gt;Puppet Deployment&lt;/h3&gt;
 &lt;hr /&gt;
-
+&lt;p&gt;We manage our Nginx+ deployments using two puppet modules.  One module deploys our ssl certificates to the server while the second module manages the yum repository for nginx plus and tracks configuration files.&lt;/p&gt;
 </description>
         <pubDate>Tue, 29 Jul 2014 08:30:52 -0700</pubDate>
         <link>http://127.0.0.1:4000/network/2014/07/29/Nginx+/</link>

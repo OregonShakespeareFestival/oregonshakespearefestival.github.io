@@ -4,10 +4,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Oregon Shakespeare Festival Tessitura and E-Commerce Design</title>
+    <title>Gatling Load Tests</title>
     <meta name="viewport" content="width=device-width">
     <meta name="description" content="This is designed to be a living document representing the Tessitura SiteCore E-Commerce Design for the Oregon Shakespeare Festival Installed at DataCenter West">
-    <link rel="canonical" href="http://127.0.0.1:4000/">
+    <link rel="canonical" href="http://127.0.0.1:4000/2014/08/06/GatlingLoadTests/">
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/css/main.css">
@@ -53,38 +53,63 @@
 
     <div class="page-content">
       <div class="wrap">
-      <div class="home">
+      <div class="post">
 
-  <h1>Posts</h1>
+  <header class="post-header">
+    <h1>Gatling Load Tests</h1>
+    <p class="meta">Aug 6, 2014</p>
+  </header>
 
-  <ul class="posts">
-    
-      <li>
-        <span class="post-date">Aug 6, 2014</span>
-        <a class="post-link" href="/2014/08/06/GatlingLoadTests/">Gatling Load Tests</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Jul 29, 2014</span>
-        <a class="post-link" href="/network/2014/07/29/Nginx+/">Nginx+ Configuration</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Jul 29, 2014</span>
-        <a class="post-link" href="/website/2014/07/29/howthewebworks/">How the Web Works</a>
-      </li>
-    
-      <li>
-        <span class="post-date">Jul 29, 2014</span>
-        <a class="post-link" href="/network/2014/07/29/Network-Diagram/">DataCenter West Networking</a>
-      </li>
-    
-  </ul>
+  <article class="post-content">
+  <h3 id="load-testing">Load Testing</h3>
+<hr />
 
-  <p class="rss-subscribe">subscribe <a href="/feed.xml">via RSS</a></p>
+<p>We have simulated load across our web farm using a scala based testing framework called <a href="http://http://gatling.io/" title="Gatling">Gatling</a>.</p>
+
+<h3 id="test-creation">Test Creation</h3>
+<hr />
+
+<h3 id="running-the-tests">Running The Tests</h3>
+<hr />
+<p>From the command line navigate to <code>$GATLING_HOME/bin</code> and run <code>./gatling.sh</code></p>
+
+<p>Simulations are recursively searched for within the directory <code>$GATLING_HOME/user_file/simulations</code> and presented for selection in a text based menu.</p>
+
+<pre><code>Choose a simulation number:
+     [0] ES4H125u
+     [1] ES4H1u
+     [2] ES4H250u
+     [3] ES4H250ux2
+     [4] ES4H250ux4
+     [5] ES4H75u
+     [6] osfashland.ES3H125u
+     [7] osfashland.ES3H1u
+     [8] osfashland.ES3H250u
+     [9] osfashland.ES3H250ux2
+     [10] osfashland.ES3H250ux4
+     [11] osfashland.ES3H75u
+</code></pre>
+
+<p>After selecting the simulation enter an id for the test, the default being the scenario name defined in the test.</p>
+
+<pre><code>Select simulation id (default is 'es4h125u'). Accepted characters are a-z, A-Z, 0-9, - and _
+EStack4H250u2   
+Select run description (optional)
+
+Simulation ES4H125u started...
+</code></pre>
+
+<p>Realtime statistics are provided every 10 seconds while the test is running and results are placed a folder in the directory <code>$GATLING_HOME\results</code> with a name that matches the standard <code>&lt;simulationid&gt;-&lt;timestamp&gt;</code></p>
+
+<h3 id="stitching-multiple-tests">Stitching Multiple Tests</h3>
+<hr />
+
+<h3 id="drawbacks">Drawbacks</h3>
+<hr />
+
+  </article>
 
 </div>
-
       </div>
     </div>
 

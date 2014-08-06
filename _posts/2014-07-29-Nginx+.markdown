@@ -7,7 +7,7 @@ categories: Network
 
 ###Nginx+
 ---------------------------
-
+Nginx 
 
 ###Nginx+ Roles
 ---------------------------
@@ -38,9 +38,9 @@ For load balancing upstream zones must be defined that adhere to the following p
     upstream <zone-name>
     {
         zone <zone-name> <memory-allocation>;
-        <additional-options>;
         <loadbalancing-style>;
-        server <ip>:<port> <additional-options>;
+        server <ip>:<port> <arguments>;
+        <additional-options>;
     }
 
 An example ripped from one of our test environments uses a least number of connections load balancing style and uses health checks to remove overloaded servers from the load balancing pool
@@ -52,7 +52,6 @@ An example ripped from one of our test environments uses a least number of conne
             least_conn;
             server 172.16.20.26:80 max_fails=5 fail_timeout=10s slow_start=30s;
             server 172.16.20.27:80 max_fails=5 fail_timeout=10s slow_start=30s;
-    
             keepalive 32;
     }
 
@@ -62,19 +61,16 @@ An example ripped from one of our test environments uses a least number of conne
 *   `max_fails` is the threshold of concurrent failed requests that nginx uses to determine server health.
 *   `fail_timeout` is the interval that nginx will wait before it begins probing a webserver again.
 *   `slow_start` is the interval during which nginx will route a reduced amount of traffic to the webserver after it passes health checks.
-*   `keepalive`
-
-	
-
+*   `keepalive` defines how many connections to keep active between each worker thread and upstream servers.
 
 ###Status Pages
 ---------------------------
-Two nginx status pages have been defined in status.conf and nginx-status.conf
+Two nginx status pages have been enabled which are defined in the files status.conf and nginx-status.conf
 
 ###Zabbix Monitoring
 ---------------------------
-
+Zabbix is used for proactive 
 
 ###Puppet Deployment
 ---------------------------
-
+We manage our Nginx+ deployments using two puppet modules.  One module deploys our ssl certificates to the server while the second module manages the yum repository for nginx plus and tracks configuration files.

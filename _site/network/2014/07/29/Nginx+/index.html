@@ -63,6 +63,7 @@
   <article class="post-content">
   <h3 id="nginx">Nginx+</h3>
 <hr />
+<p>Nginx </p>
 
 <h3 id="nginx-roles">Nginx+ Roles</h3>
 <hr />
@@ -95,9 +96,9 @@ In the main config file <code>nginx.conf</code> there are several important opti
 <pre><code>upstream &lt;zone-name&gt;
 {
     zone &lt;zone-name&gt; &lt;memory-allocation&gt;;
-    &lt;additional-options&gt;;
     &lt;loadbalancing-style&gt;;
-    server &lt;ip&gt;:&lt;port&gt; &lt;additional-options&gt;;
+    server &lt;ip&gt;:&lt;port&gt; &lt;arguments&gt;;
+    &lt;additional-options&gt;;
 }
 </code></pre>
 
@@ -110,7 +111,6 @@ In the main config file <code>nginx.conf</code> there are several important opti
         least_conn;
         server 172.16.20.26:80 max_fails=5 fail_timeout=10s slow_start=30s;
         server 172.16.20.27:80 max_fails=5 fail_timeout=10s slow_start=30s;
-
         keepalive 32;
 }
 </code></pre>
@@ -122,19 +122,20 @@ In the main config file <code>nginx.conf</code> there are several important opti
   <li><code>max_fails</code> is the threshold of concurrent failed requests that nginx uses to determine server health.</li>
   <li><code>fail_timeout</code> is the interval that nginx will wait before it begins probing a webserver again.</li>
   <li><code>slow_start</code> is the interval during which nginx will route a reduced amount of traffic to the webserver after it passes health checks.</li>
-  <li><code>keepalive</code></li>
+  <li><code>keepalive</code> defines how many connections to keep active between each worker thread and upstream servers.</li>
 </ul>
 
 <h3 id="status-pages">Status Pages</h3>
 <hr />
-<p>Two nginx status pages have been defined in status.conf and nginx-status.conf</p>
+<p>Two nginx status pages have been enabled which are defined in the files status.conf and nginx-status.conf</p>
 
 <h3 id="zabbix-monitoring">Zabbix Monitoring</h3>
 <hr />
+<p>Zabbix is used for proactive </p>
 
 <h3 id="puppet-deployment">Puppet Deployment</h3>
 <hr />
-
+<p>We manage our Nginx+ deployments using two puppet modules.  One module deploys our ssl certificates to the server while the second module manages the yum repository for nginx plus and tracks configuration files.</p>
 
   </article>
 
