@@ -186,11 +186,11 @@ Below are the cache settings we arrived at:
 
 #Before Tuning
 
-![beforetuning](static/beforetuning.png)
+![beforetuning](/static/beforetuning.png)
 
 #After Tuning
 
-![aftertuning](static/aftertuning.png)
+![aftertuning](/static/aftertuning.png)
 
 
 #### Tessitura Database Server
