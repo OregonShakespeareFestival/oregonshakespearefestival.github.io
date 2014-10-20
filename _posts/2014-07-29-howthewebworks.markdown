@@ -127,9 +127,31 @@ OSF's web server configuration is quite unique in that three distinctly differen
 
 
 #### Tessitura Service Layer
-The tessitura service layer is unique to OSF's sitecore deployment.  This is representative of the soap services needed to integrate with the ERP/CRM Tessitura.  Rather than go parallel with the Tessitura service layer we elected to use web gardens on the web server, employ the ASP.NET state service, and parallelize threads on each web server.
 
-Additionally the queue lengths on the application workers were also increased from their default setting of 1000 to 5000.
+In the end OSF ended up abandoning web gardens as a means of scaling out the Tessitura WebAPI.  Instead NGINX+ was used to balance the load across a small service layer farm.  Occassionally these seem to start generating status code 500 and need a short break.  We use the nginx "health_check" parameter in concert with slow start to give the service layer farm the break it needs while still providing great service.
+
+    upstream wwwa-services-backend
+    {
+
+        zone wwwa-services-backend 1024k;
+
+        server 172.16.20.80:80 slow_start=30s;
+        server 172.16.20.78:80 slow_start=30s;
+        server 172.16.20.76:80 slow_start=30s;
+        server 172.16.20.74:80 slow_start=30s;
+
+    }
+
+
+>The above demonstrates the slow_start in the upstream config in NGINX+.
+
+
+
+### The below method of using the service layer was tried and failed.
+
+>The tessitura service layer is unique to OSF's sitecore deployment.  This is representative of the soap services needed to integrate with the ERP/CRM Tessitura.  Rather than go parallel with the Tessitura service layer we elected to use web gardens on the web server, employ the ASP.NET state service, and parallelize threads on each web server.
+
+>Additionally the queue lengths on the application workers were also increased from their default setting of 1000 to 5000.
 
 #### Select your own seat service
 The select your own seat service by Jacobson Consulting and Associates uses the Tessitura service layer, javascript, and SVG objects to facilitate the generation of a seat map.  The service also has logic in it to evaluate membership levels.
@@ -146,9 +168,21 @@ SiteCore's caches per delivery server have been optimized according to the follo
 
 The sitecore instance on each web server is connected to the set of tessitura services on it's own web node.
 
+This was optimized using the CacheManager report tool from the SiteCore Network.
+
+>https://marketplace.sitecore.net/en/Modules/Caching_Manager.aspx
+
+Below are the cache settings we arrived at:
+
+        <cacheSizes hint="setting">
+          <data>200MB</data>
+          <items>100MB</items>
+          <paths>100MB</paths>
+          <itempaths>100MB</itempaths>
+          <standardValues>100MB</standardValues>
+        </cacheSizes>
+
+
 #### Tessitura Database Server
 
-
-
-
-
+OSF's Tessitura server is the default deployment.
