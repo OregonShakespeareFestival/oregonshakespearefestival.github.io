@@ -182,6 +182,16 @@ Below are the cache settings we arrived at:
           <standardValues>100MB</standardValues>
         </cacheSizes>
 
+>Agressively leveraging SiteCore caches was the silver bullet so to speak in our load testing.  We use Gatling a fantastic stress test tool written in scala to test the web environment.  Until tuning these cache settings it seemed we could only get 84 persons through checkout things were looking grim.  After tuning these settings we demonstrated a 44,000 ticket scenario across 900 accounts over 21 minutes with 5.6s page load averages in the 95-th percentile.   
+
+#Before Tuning
+
+![beforetuning](static/beforetuning.png)
+
+#After Tuning
+
+![aftertuning](static/aftertuning.png)
+
 
 #### Tessitura Database Server
 
